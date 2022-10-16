@@ -1,0 +1,36 @@
+<html>
+
+<head>
+    <title>MD5 Decrypt</title>
+    <link rel="stylesheet" href="stylesheets/bootstrap.css">
+</head>
+
+<body>
+<h1>MD5 Decrypt</h1>
+<div class="form-group">
+    <label for="hash">MD5 Value</label>
+    <input type="text" class="form-control" id="hash" aria-describedby="md5help"
+           placeholder="MD5 hash here">
+    <small id="md5help" class="form-text text-muted">Input MD5 hash to decrypt.</small>
+    <label id="outputValue"></label>
+</div>
+<div class="btn btn-primary" id="decryptButton">Decrypt</div>
+
+</body>
+<script>
+    const decryptButton = document.getElementById('decryptButton');
+    decryptButton.addEventListener('click', decryptMd5);
+    async function decryptMd5() {
+        let hash = document.getElementById('hash').value;
+        let response = await fetch('/decrypt?' + new URLSearchParams({
+            q: hash
+        }));
+        let result = await response.json();
+        if (result.found) {
+            document.getElementById('outputValue').innerHTML = result.result;
+        } else {
+            document.getElementById('outputValue').innerHTML = 'Not found!';
+        }
+    }
+</script>
+</html>
